@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer {
+  @font-face {
+    font-family: mullish;
+    src: url('./assets/fonts/Mulish-VariableFont_wght.ttf');
+  }
+
+  body {
+    @apply bg-light text-dark
+  }
+
+  .pulsor {
+    animation: pulse 1.5s alternate ease-in-out infinite;
+    @apply absolute top-0 left-0 w-[calc(100%)] h-[calc(100%)]
+  }
+
+  .pulsorbutton {
+    animation: pulsebtn 1.5s alternate ease-in-out infinite;
+    @apply absolute top-0 left-0 w-[calc(100%)] h-[calc(100%)]
+  }
+
+  .float {
+    animation: floating 1.5s alternate ease-in-out infinite
+  }
+
+  @keyframes pulsebtn {
+    from {
+      transform: scale(1);
+    }
+
+    to {
+      transform: scale(1.25);
+    }
+  }
+
+  @keyframes pulse {
+    from {
+      transform: scale(1);
+    }
+
+    to {
+      transform: scale(1.25);
+    }
+  }
+
+  @keyframes floating {
+    from {
+      transform: translate(0, 15px);
+    }
+
+    to {
+      transform: translate(0, 0px);
+    }
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: 0;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
