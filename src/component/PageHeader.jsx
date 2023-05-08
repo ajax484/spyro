@@ -1,6 +1,10 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 export default function PageHeader() {
+  const route = useLocation();
+
+  console.log(route);
   return (
     <div className="page-header mt-5-7">
       <div className="page-leftheader">

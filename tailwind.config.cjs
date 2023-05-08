@@ -10,13 +10,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#0052FF',
+        primary: '#007BFF',
         dark: '#0A0B0D',
         light: '#FCFCFC',
         grey: '#2C313A'
       },
       fontFamily: {
-        mullish: ['mullish', 'sans-serif'],
+        poppins: ['poppins', 'sans-serif'],
       },
     },
   },

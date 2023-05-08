@@ -4,12 +4,16 @@
 
 @layer {
   @font-face {
-    font-family: mullish;
-    src: url('./assets/fonts/Mulish-VariableFont_wght.ttf');
+    font-family: poppins;
+    src: url('/public/poppins.ttf');
+  }
+
+  * {
+    box-sizing: border-box;
   }
 
   body {
-    @apply bg-light text-dark
+    @apply bg-light text-dark !font-poppins
   }
 
   .pulsor {
