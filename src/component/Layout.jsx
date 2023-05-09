@@ -14,7 +14,7 @@ export default function Layout({ children }) {
       <aside
         className={`z-[10000] fixed py-8 ${
           isOpen && "-left-1/4 -translate-x-1/2"
-        } md:left-0 md:translate-x-0 w-1/2 md:w-1/5 border-r-[1px] bg-white border-gray-100 space-y-4 h-screen transition-transform duration-750 ease-in-out`}
+        } md:left-0 md:translate-x-0 w-1/2 md:w-1/5 border-r-[1px] bg-white border-gray-100 space-y-8 h-screen transition-transform duration-750 ease-in-out`}
       >
         <Sidebar />
       </aside>
