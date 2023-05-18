@@ -12,8 +12,16 @@ import { useEffect } from "react";
 import TestTable from "./Pages/Dashboard/Users/TestTable";
 import CreateUser from "./Pages/Dashboard/Users/CreateUser";
 import UserMonitor from "./Pages/Dashboard/Users/UserMonitor";
-import ReferralSystem from "./Pages/Dashboard/Referrals/ReferralSystem";
-import ReferralPayout from "./Pages/Dashboard/Referrals/ReferralPayout";
+import ReferralSystem from "./Pages/Dashboard/Finance/ReferralSystem";
+import ReferralPayout from "./Pages/Dashboard/Finance/ReferralPayout";
+import Subscription from "./Pages/Dashboard/Finance/Subscription";
+import Subscribers from "./Pages/Dashboard/Finance/Subscribers";
+import { QueryClient, QueryClientProvider } from "react-query";
+import Auth from "./Pages/Auth";
+import SignIn from "./Pages/Auth/SignIn";
+import GlobalContext from "./Context";
+
+const queryClient = new QueryClient();
 
 function App() {
   // This will run one time after the component mounts
@@ -35,31 +43,48 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<SignUp />} />
-        <Route
-          path="/admin"
-          element={
-            <>
-              <Outlet />
-            </>
-          }
-        >
-          <Route path="users" element={<MainDashboard />}>
-            <Route exact path="dashboard" element={<UserDashboard />} />
-            <Route exact path="list" element={<UserList />} />
-            <Route exact path="create" element={<CreateUser />} />
-            <Route exact path="monitor" element={<UserMonitor />} />
-            {/* <Route exact path="testtable" element={<TestTable />} /> */}
-          </Route>
-          <Route path="referrals" element={<MainDashboard />}>
-            <Route exact path="system" element={<ReferralSystem />} />
-            <Route exact path="payout" element={<ReferralPayout />} />
-          </Route>
-        </Route>
-      </Routes>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <GlobalContext>
+        <Router>
+          <Routes>
+            <Route path="/auth" element={<Auth />}>
+              <Route exact path="signup" element={<SignUp />} />
+              <Route exact path="signin" element={<SignIn />} />
+            </Route>
+            <Route
+              path="/admin"
+              element={
+                <>
+                  <Outlet />
+                </>
+              }
+            >
+              <Route path="users" element={<MainDashboard />}>
+                <Route exact path="dashboard" element={<UserDashboard />} />
+                <Route exact path="list" element={<UserList />} />
+                <Route exact path="create" element={<CreateUser />} />
+                <Route exact path="monitor" element={<UserMonitor />} />
+                {/* <Route exact path="testtable" element={<TestTable />} /> */}
+              </Route>
+              <Route path="Finance" element={<MainDashboard />}>
+                <Route
+                  exact
+                  path="referrals_system"
+                  element={<ReferralSystem />}
+                />
+                <Route
+                  exact
+                  path="referrals_payout"
+                  element={<ReferralPayout />}
+                />
+                <Route exact path="subscription" element={<Subscription />} />
+                <Route exact path="subscribers" element={<Subscribers />} />
+              </Route>
+            </Route>
+          </Routes>
+        </Router>
+      </GlobalContext>
+    </QueryClientProvider>
   );
 }
 

@@ -1,87 +1,151 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useMutation } from "react-query";
+import { useAuth } from "../../Context/AuthContext";
 
 export default function SignUp() {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [country, setCountry] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [userDetails, setDetails] = useState({
+    username: "",
+    firstname: "",
+    lastname: "",
+    password: "",
+    confirmpassword: "",
+    bio: "",
+    location: "",
+    country: "",
+    avatarurl: "",
+  });
 
-  useEffect(() => {
-    console.log({ fullName, email, country, password, confirmPassword });
-  }, [fullName, email, country, password, confirmPassword]);
+  const { register } = useAuth();
 
-  const handleFullNameChange = (event) => setFullName(event.target.value);
-  const handleEmailChange = (event) => setEmail(event.target.value);
-  const handleCountryChange = (event) => setCountry(event.target.value);
-  const handlePasswordChange = (event) => setPassword(event.target.value);
-  const handleConfirmPasswordChange = (event) =>
-    setConfirmPassword(event.target.value);
+  const updateDetail = (name, value) =>
+    setDetails((prevDetails) => ({ ...prevDetails, [name]: value }));
+
+  const { mutate, isLoading, error } = useMutation(async () => {
+    try {
+      const {
+        username,
+        firstname,
+        lastname,
+        password,
+        confirmpassword,
+        bio,
+        location,
+        country,
+        avatarurl,
+      } = userDetails;
+
+      console.log({
+        username,
+        firstname,
+        lastname,
+        password,
+        confirmpassword,
+        bio,
+        location,
+        country,
+        avatarurl,
+      });
+
+      if (!username || !firstname || !lastname || !password || !country) {
+        throw new Error("please fill all required fields");
+      }
+
+      if (password !== confirmpassword) {
+        throw new Error("Password doesn't match");
+      }
+
+      const { data, msg, error } = await register(userDetails);
+
+      console.log(data);
+
+      if (error) {
+        throw new Error(error);
+      }
+
+      alert(msg);
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
+  });
 
   return (
-    <div className="md:grid md:grid-cols-2">
-      <div className="relative">
-        <div className="h-screen fixed overflow-hidden w-[100vw] md:w-[50vw]">
-          <img src="/login-bg.png" className="h-full" alt="" />
-        </div>
-      </div>
-      <div>
-        <form
-          method="POST"
-          action="https://test.spyro.ai/register"
-          className="pt-8 pb-4 md:pt-28 md:pb-8 px-4 space-y-8 absolute md:static bg-white h-fit top-1/2 -translate-y-1/2 md:translate-y-0 left-1/2 -translate-x-1/2 md:translate-x-0 w-[90vw] md:w-[unset] rounded-xl md:rounded-none"
-        >
-          <h3 className="text-center font-bold mb-8 text-3xl">
-            Sign Up to{" "}
-            <span className="text-primary">
-              <a href="https://test.spyro.ai">Spyro</a>
-            </span>
-          </h3>
-          <div className="space-y-6 px-4">
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-bold text-right">
-                Full Name
+    <form
+      method="POST"
+      className="pt-8 pb-4 md:pt-28 md:pb-8 px-4 space-y-8 absolute md:static bg-white h-fit top-1/2 -translate-y-1/2 md:translate-y-0 left-1/2 -translate-x-1/2 md:translate-x-0 w-[90vw] md:w-[unset] rounded-xl md:rounded-none"
+    >
+      <h3 className="text-center font-bold mb-8 text-3xl">
+        Sign Up to{" "}
+        <span className="text-primary">
+          <a href="#">Brainwave</a>
+        </span>
+      </h3>
+      <div className="space-y-6 px-4">
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 space-y-2">
+              <label htmlFor="name" className="text-sm font-medium text-right">
+                First Name <small className="text-gray-500">(Required)</small>
               </label>
               <br />
               <input
-                id="name"
-                type="name"
+                id="firstname"
                 className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="name"
+                name="firstname"
                 autoComplete="off"
                 autoFocus
-                placeholder="First and Last Names"
-                onChange={handleFullNameChange}
+                placeholder="First Name"
+                onChange={(e) => updateDetail("firstname", e.target.value)}
                 required
               />
             </div>
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-bold text-right">
-                Email Address
+            <div className="flex-1 space-y-2">
+              <label
+                htmlFor="lastname"
+                className="text-sm font-medium text-right"
+              >
+                Last Name <small className="text-gray-500">(Required)</small>
               </label>
               <br />
               <input
-                id="email"
-                type="email"
+                id="lastname"
                 className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="email"
-                onChange={handleEmailChange}
+                name="lastname"
                 autoComplete="off"
-                placeholder="Email Address"
+                autoFocus
+                placeholder="Last Name"
+                onChange={(e) => updateDetail("lastname", e.target.value)}
                 required
               />
             </div>
-            <div className="space-y-2">
-              <label htmlFor="country" className="text-sm font-bold text-right">
-                Country
+          </div>
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <label
+                htmlFor="username"
+                className="text-sm font-bold text-right"
+              >
+                Username <small className="text-gray-500">(required)</small>
               </label>
+              <br />
+              <input
+                className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
+                name="username"
+                onChange={(e) => updateDetail("username", e.target.value)}
+                autoComplete="off"
+              />
+            </div>
+            <div className="flex-1">
+              <label htmlFor="country" className="text-sm font-bold text-right">
+                Country <small className="text-gray-500">(required)</small>
+              </label>
+              <br />
               <select
-                id="user-country"
                 name="country"
-                data-placeholder="Select Your Country"
                 className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
                 required
-                onChange={handleCountryChange}
+                onChange={(e) => updateDetail("country", e.target.value)}
               >
                 <option value="Afganistan">Afganistan</option>
                 <option value="Albania">Albania</option>
@@ -359,86 +423,108 @@ export default function SignUp() {
                 <option value="Zimbabwe">Zimbabwe</option>
               </select>
             </div>
-            <div className="space-y-2">
+          </div>
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 space-y-2">
               <label
-                htmlFor="password-input"
-                className="text-sm font-bold text-right"
+                htmlFor="password"
+                className="text-sm font-medium text-right"
               >
-                Password
+                Password <small className="text-gray-500">(Required)</small>
               </label>
+              <br />
               <input
-                id="password-input"
+                id="password"
                 type="password"
                 className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
                 name="password"
-                required
                 autoComplete="off"
-                placeholder="Password"
-                onChange={handlePasswordChange}
+                autoFocus
+                placeholder="password"
+                onChange={(e) => updateDetail("password", e.target.value)}
+                required
               />
             </div>
-            <div className="space-y-2">
+            <div className="flex-1 space-y-2">
               <label
-                htmlFor="password-confirm"
-                className="text-sm font-bold text-right"
+                htmlFor="password"
+                className="text-sm font-medium text-right"
               >
-                Confirm Password
+                Confirm Password{" "}
+                <small className="text-gray-500">(Required)</small>
               </label>
+              <br />
               <input
-                id="password-confirm"
+                id="confirmpassword"
                 type="password"
                 className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="password_confirmation"
-                required
+                name="confirmpassword"
                 autoComplete="off"
-                placeholder="Confirm Password"
-                onChange={handleConfirmPasswordChange}
-              />
-            </div>
-          </div>
-          <div className="px-4">
-            <div className="flex gap-2 items-center">
-              <input
-                type="checkbox"
-                className="form-checkbox h-5 w-5 text-primary border border-gray-100 rounded-sm hover:border-sky-200 focus:outline-sky-200"
-                name="agreement"
-                id="agreement"
+                autoFocus
+                placeholder="confirm password"
+                onChange={(e) =>
+                  updateDetail("confirmpassword", e.target.value)
+                }
                 required
               />
-              <span className="text-sm text-gray-500">
-                By continuing, I agree with your{" "}
-                <a
-                  href="https://test.spyro.ai/terms-and-conditions"
-                  className="text-primary"
-                >
-                  Terms and Conditions
-                </a>{" "}
-                and{" "}
-                <a
-                  href="https://test.spyro.ai/privacy-policy"
-                  className="text-primary"
-                >
-                  Privacy Policies
-                </a>
-              </span>
             </div>
           </div>
-          <div className="flex flex-col gap-y-2 items-center">
-            <button
-              type="submit"
-              className="bg-primary rounded-lg py-2 px-3 text-white font-semibold border border-primary hover:bg-white hover:text-primary transition-colors duration-150"
-            >
-              Sign Up
-            </button>
-            <p className="text-sm text-gray-500">
-              or{" "}
-              <a className="text-primary" href="https://test.spyro.ai/login">
-                Login
-              </a>
-            </p>
+        </div>
+        <div className="space-y-6 pt-6">
+          <div className="flex-1 space-y-2">
+            <label htmlFor="name" className="text-sm font-medium text-right">
+              Bio <small className="text-gray-500">(optional)</small>
+            </label>
+            <br />
+            <textarea
+              id="bio"
+              className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
+              name="bio"
+              autoComplete="off"
+              autoFocus
+              onChange={(e) => updateDetail("bio", e.target.value)}
+            />
           </div>
-        </form>
+          <div className="space-y-2">
+            <label
+              htmlFor="addressline"
+              className="text-sm font-bold text-right"
+            >
+              Location <small className="text-gray-500">(optional)</small>
+            </label>
+            <br />
+            <input
+              id="location"
+              className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
+              name="location"
+              onChange={(e) => updateDetail("location", e.target.value)}
+              autoComplete="off"
+            />
+          </div>
+        </div>
       </div>
-    </div>
+      <div className="flex flex-col gap-y-2 items-center">
+        <button
+          disabled={isLoading}
+          type="submit"
+          className="bg-primary rounded-lg py-2 px-3 text-white font-semibold border border-primary hover:bg-white hover:text-primary transition-colors duration-150"
+          onClick={(e) => {
+            e.preventDefault();
+            mutate();
+          }}
+        >
+          {isLoading ? "Loading..." : "Sign Up"}
+        </button>
+        <p className="text-sm text-gray-500">
+          or{" "}
+          <Link
+            className="text-primary hover:font-semibold hover:underline"
+            to={"/auth/signin"}
+          >
+            Sign In
+          </Link>
+        </p>
+      </div>
+    </form>
   );
 }

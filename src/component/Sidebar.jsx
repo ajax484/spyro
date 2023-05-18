@@ -32,8 +32,8 @@ const routes = [
     ],
   },
   {
-    label: "Referrals",
-    mainpath: "/admin/referrals",
+    label: "Finance",
+    mainpath: "/admin/finance",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -47,12 +47,20 @@ const routes = [
     ),
     children: [
       {
-        path: "system",
+        path: "referrals_system",
         label: "Referral System",
       },
       {
-        path: "payout",
+        path: "referrals_payout",
         label: "Referral Payout",
+      },
+      {
+        path: "subscription",
+        label: "Subscription",
+      },
+      {
+        path: "subscribers",
+        label: "Subscribers",
       },
     ],
   },

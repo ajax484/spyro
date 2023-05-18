@@ -1,274 +1,147 @@
-import React from "react";
-import ReactFlagsSelect from "react-flags-select";
-import { country_codes } from "../../../utils/data";
+import React, { useState } from "react";
+// import ReactFlagsSelect from "react-flags-select";
+// import { country_codes } from "../../../utils/data";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import { useAuth } from "../../../Context/AuthContext";
 
 export default function CreateUser() {
   const navigate = useNavigate();
+  const [userDetails, setDetails] = useState({
+    username: "",
+    firstname: "",
+    lastname: "",
+    password: "",
+    confirmpassword: "",
+    bio: "",
+    location: "",
+    country: "",
+    avatarurl: "",
+  });
+
+  const { register } = useAuth();
+
+  const updateDetail = (name, value) =>
+    setDetails((prevDetails) => ({ ...prevDetails, [name]: value }));
+
+  const { mutate, isLoading, error } = useMutation(async () => {
+    try {
+      const {
+        username,
+        firstname,
+        lastname,
+        password,
+        confirmpassword,
+        bio,
+        location,
+        country,
+        avatarurl,
+      } = userDetails;
+
+      console.log({
+        username,
+        firstname,
+        lastname,
+        password,
+        confirmpassword,
+        bio,
+        location,
+        country,
+        avatarurl,
+      });
+
+      if (!username || !firstname || !lastname || !password || !country) {
+        throw new Error("please fill all required fields");
+      }
+
+      if (password !== confirmpassword) {
+        throw new Error("Password doesn't match");
+      }
+
+      const { data, msg, error } = await register(userDetails);
+
+      console.log(response);
+
+      if (error) {
+        throw new Error(error);
+      }
+
+      alert(msg);
+    } catch (error) {
+      alert(error);
+    }
+  });
 
   return (
-    <div className="bg-white shadow-md rounded-xl border-gray-100 overflow-hidden border-[1px] space-y-4 w-2/3">
+    <div className="bg-white shadow-md rounded-xl border-gray-100 overflow-hidden border-[1px] space-y-4 md:w-2/3">
       <div className="border-b-[1px] border-gray-200 px-4 py-4">
         <h2 className="text-lg font-bold">Create New User</h2>
       </div>
       <form action="" className="p-4 space-y-10 divide-y-[1px] divide-gray-200">
         <div className="space-y-6">
-          <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 space-y-2">
               <label htmlFor="name" className="text-sm font-medium text-right">
-                Full Name <small className="text-gray-500">(Required)</small>
+                First Name <small className="text-gray-500">(Required)</small>
               </label>
               <br />
               <input
-                id="name"
-                type="name"
+                id="firstname"
                 className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="name"
+                name="firstname"
                 autoComplete="off"
                 autoFocus
-                placeholder="First and Last Names"
-                //   onChange={handleFullNameChange}
+                placeholder="First Name"
+                onChange={(e) => updateDetail("firstname", e.target.value)}
                 required
               />
             </div>
-            <div className="flex-1 space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-right">
-                Email <small className="text-gray-500">(Required)</small>
-              </label>
-              <br />
-              <input
-                id="email"
-                type="email"
-                className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="email"
-                autoComplete="off"
-                autoFocus
-                placeholder="First and Last Names"
-                //   onChange={handleFullNameChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="flex gap-4">
             <div className="flex-1 space-y-2">
               <label
-                htmlFor="password"
+                htmlFor="lastname"
                 className="text-sm font-medium text-right"
               >
-                Password <small className="text-gray-500">(Required)</small>
+                Last Name <small className="text-gray-500">(Required)</small>
               </label>
               <br />
               <input
-                id="password"
-                type="password"
+                id="lastname"
                 className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="password"
+                name="lastname"
                 autoComplete="off"
                 autoFocus
-                placeholder="password"
-                //   onChange={handleFullNameChange}
-                required
-              />
-            </div>
-            <div className="flex-1 space-y-2">
-              <label
-                htmlFor="password"
-                className="text-sm font-medium text-right"
-              >
-                Confirm Password <small className="text-gray-500">(Required)</small>
-              </label>
-              <br />
-              <input
-                id="confirmpassword"
-                type="password"
-                className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="confirmpassword"
-                autoComplete="off"
-                autoFocus
-                placeholder="confirm password"
-                //   onChange={handleFullNameChange}
+                placeholder="Last Name"
+                onChange={(e) => updateDetail("lastname", e.target.value)}
                 required
               />
             </div>
           </div>
-          <div className="space-y-2 w-1/2 pr-2">
-            <label htmlFor="role" className="text-sm font-medium text-right">
-              User Role
-            </label>
-            <select
-              id="user-role"
-              name="role"
-              data-placeholder="Select User Role"
-              className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-              required
-              // onChange={handleCountryChange}
-            >
-              <option value="user">User</option>
-              <option value="subscriber">Subscriber</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-        </div>
-        <div className="space-y-6 pt-6">
-          <div className="flex gap-4">
-            <div className="flex-1 space-y-2">
-              <label htmlFor="name" className="text-sm font-medium text-right">
-                Job Role <small className="text-gray-500">(optional)</small>
-              </label>
-              <br />
-              <input
-                id="jobrole"
-                type="text"
-                className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="jobrole"
-                autoComplete="off"
-                autoFocus
-                //   onChange={handleFullNameChange}
-              />
-            </div>
-            <div className="flex-1 space-y-2">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
               <label
-                htmlFor="number"
-                className="text-sm font-medium text-right"
-              >
-                Phone Number <small className="text-gray-500">(optional)</small>
-              </label>
-              <br />
-              <div className="flex gap-2">
-                <div className="flex-[40%]">
-                  <select
-                    id="country-code"
-                    name="country-code"
-                    className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                    required
-                    // onChange={handleCountryChange}
-                  >
-                    {country_codes.map((country) => (
-                      <option value={country.value}>
-                        <span className="font-semibold text-sm">
-                          {country.code}
-                          {" - "}
-                        </span>
-                        <span>{country.value}</span>
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex-[60%]">
-                  <input
-                    id="number"
-                    type="number"
-                    max={9}
-                    className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200 appearance-none"
-                    name="number"
-                    autoComplete="off"
-                    autoFocus
-                    placeholder="First and Last Names"
-                    //   onChange={handleFullNameChange}
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="flex-1 space-y-2">
-              <label
-                htmlFor="company_name"
-                className="text-sm font-medium text-right"
-              >
-                Company Name <small className="text-gray-500">(optional)</small>
-              </label>
-              <br />
-              <input
-                id="company_name"
-                className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="company_name"
-                autoComplete="off"
-                autoFocus
-                //   onChange={handleFullNameChange}
-                required
-              />
-            </div>
-            <div className="flex-1 space-y-2">
-              <label
-                htmlFor="company_website"
-                className="text-sm font-medium text-right"
-              >
-                Company Website <small className="text-gray-500">(optional)</small>
-              </label>
-              <br />
-              <input
-                id="company_website"
-                className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="company_website"
-                autoComplete="off"
-                autoFocus
-                //   onChange={handleFullNameChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <label
-              htmlFor="addressline"
-              className="text-sm font-bold text-right"
-            >
-              Address Line <small className="text-gray-500">(optional)</small>
-            </label>
-            <br />
-            <input
-              id="addressline"
-              className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-              name="addressline"
-              //   onChange={handleEmailChange}
-              autoComplete="off"
-            />
-          </div>
-          <div className="flex gap-4">
-            <div className="flex-[33%]">
-              <label htmlFor="city" className="text-sm font-bold text-right">
-                City <small className="text-gray-500">(optional)</small>
-              </label>
-              <br />
-              <input
-                id="city"
-                className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="city"
-                //   onChange={handleEmailChange}
-                autoComplete="off"
-              />
-            </div>
-            <div className="flex-[33%]">
-              <label
-                htmlFor="postalcode"
+                htmlFor="username"
                 className="text-sm font-bold text-right"
               >
-                Postal Code <small className="text-gray-500">(optional)</small>
+                Username <small className="text-gray-500">(required)</small>
               </label>
               <br />
               <input
-                id="postalcode"
                 className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
-                name="postalcode"
-                //   onChange={handleEmailChange}
+                name="username"
+                onChange={(e) => updateDetail("username", e.target.value)}
                 autoComplete="off"
               />
             </div>
-            <div className="flex-[33%]">
-              <label
-                htmlFor="postalcode"
-                className="text-sm font-bold text-right"
-              >
-                Country <small className="text-gray-500">(optional)</small>
+            <div className="flex-1">
+              <label htmlFor="country" className="text-sm font-bold text-right">
+                Country <small className="text-gray-500">(required)</small>
               </label>
               <br />
               <select
-                id="user-country"
                 name="country"
                 className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
                 required
-                // onChange={handleCountryChange}
+                onChange={(e) => updateDetail("country", e.target.value)}
               >
                 <option value="Afganistan">Afganistan</option>
                 <option value="Albania">Albania</option>
@@ -547,21 +420,103 @@ export default function CreateUser() {
               </select>
             </div>
           </div>
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 space-y-2">
+              <label
+                htmlFor="password"
+                className="text-sm font-medium text-right"
+              >
+                Password <small className="text-gray-500">(Required)</small>
+              </label>
+              <br />
+              <input
+                id="password"
+                type="password"
+                className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
+                name="password"
+                autoComplete="off"
+                autoFocus
+                placeholder="password"
+                onChange={(e) => updateDetail("password", e.target.value)}
+                required
+              />
+            </div>
+            <div className="flex-1 space-y-2">
+              <label
+                htmlFor="password"
+                className="text-sm font-medium text-right"
+              >
+                Confirm Password{" "}
+                <small className="text-gray-500">(Required)</small>
+              </label>
+              <br />
+              <input
+                id="confirmpassword"
+                type="password"
+                className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
+                name="confirmpassword"
+                autoComplete="off"
+                autoFocus
+                placeholder="confirm password"
+                onChange={(e) =>
+                  updateDetail("confirmpassword", e.target.value)
+                }
+                required
+              />
+            </div>
+          </div>
+        </div>
+        <div className="space-y-6 pt-6">
+          <div className="flex-1 space-y-2">
+            <label htmlFor="name" className="text-sm font-medium text-right">
+              Bio <small className="text-gray-500">(optional)</small>
+            </label>
+            <br />
+            <textarea
+              id="bio"
+              className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
+              name="bio"
+              autoComplete="off"
+              autoFocus
+              onChange={(e) => updateDetail("bio", e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <label
+              htmlFor="addressline"
+              className="text-sm font-bold text-right"
+            >
+              Location <small className="text-gray-500">(optional)</small>
+            </label>
+            <br />
+            <input
+              id="location"
+              className="bg-primary/5 rounded-lg px-4 py-2 w-full border border-gray-100 hover:border-sky-200 focus:outline-1 focus:outline-sky-200"
+              name="location"
+              onChange={(e) => updateDetail("location", e.target.value)}
+              autoComplete="off"
+            />
+          </div>
         </div>
         <div className="py-4 flex justify-end gap-4 mr-4">
           <button
+            disabled={isLoading}
             type="submit"
             className="bg-black rounded-lg py-2 px-3 text-white font-semibold border border-black hover:bg-white hover:text-black transition-colors duration-150"
             onClick={() => navigate("/admin/users/list")}
           >
-            Return
+            {isLoading ? "Loading..." : "Return"}
           </button>
           <button
+            disabled={isLoading}
             type="submit"
-            className="bg-primary rounded-lg py-2 px-3 text-white font-semibold border border-primary hover:bg-white hover:text-primary transition-colors duration-150"
-            onClick={() => navigate("/admin/users/create")}
+            className="bg-primary rounded-lg py-2 px-3 text-white font-semibold border border-primary hover:bg-white hover:text-primary transition-colors duration-150 disabled:bg-gray-800 disabled:text-white"
+            onClick={(e) => {
+              e.preventDefault();
+              mutate();
+            }}
           >
-            Create
+            {isLoading ? "Loading..." : "Create"}
           </button>
         </div>
       </form>
