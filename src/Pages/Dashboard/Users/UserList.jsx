@@ -1,80 +1,7 @@
-import React from "react";
+import {useState} from "react";
 import { useNavigate } from "react-router-dom";
-
-const dummyUsers = [
-  {
-    name: "Vivian Agbata",
-    email: "vivianagbata1@gmail.com",
-    role: "User",
-    imagesLeft: 685,
-    wordsLeft: 1000,
-    country: "Ireland",
-    status: "Active",
-    dateCreatedAt: "28 Mar 2023",
-    timeCreatedAt: "11:18 AM",
-    avatar: "Avatar",
-  },
-  {
-    name: "Jonathan Emmanuel",
-    email: "jonathan@zenithchain.co",
-    role: "Subscriber",
-    imagesLeft: 50000,
-    wordsLeft: 30,
-    country: "Ireland",
-    status: "Active",
-    dateCreatedAt: "28 Mar 2023",
-    timeCreatedAt: "20:36 PM",
-    avatar: "Avatar",
-  },
-  {
-    name: "Jonathan Emmanuel",
-    email: "jonathan@payvix.com",
-    role: "Subscriber",
-    imagesLeft: 5000,
-    wordsLeft: 1000,
-    country: "Ireland",
-    status: "Active",
-    dateCreatedAt: "28 Mar 2023",
-    timeCreatedAt: "01:56 AM",
-    avatar: "Avatar",
-  },
-  {
-    name: "Jonathan Emmanuel",
-    email: "jezenith22@gmail.com",
-    role: "User",
-    imagesLeft: 1000,
-    wordsLeft: 1000,
-    country: "Ireland",
-    status: "Pending",
-    dateCreatedAt: "03 Apr 2023",
-    timeCreatedAt: "15:23 PM",
-    avatar: "Avatar",
-  },
-  {
-    name: "Carue Main",
-    email: "salbiz2021@gmail.com",
-    role: "User",
-    imagesLeft: 1000,
-    wordsLeft: 1000,
-    country: "Nigeria",
-    status: "Active",
-    dateCreatedAt: "01 May 2023",
-    timeCreatedAt: "14:51 PM",
-    avatar: "Avatar",
-  },
-  {
-    name: "Admin",
-    email: "admin@example.com",
-    role: "Admin",
-    imagesLeft: 100000,
-    wordsLeft: 10000,
-    country: "",
-    status: "Active",
-    dateCreatedAt: "27 Mar 2023",
-    timeCreatedAt: "20:46 PM",
-    avatar: "Avatar",
-  },
-];
+import useTable from "../../../Pagination/useTable";
+import TableFooter from "../../../Pagination/TableFooter";
 
 function UserRow({ user }) {
   console.log(user);
@@ -158,8 +85,12 @@ function UserRow({ user }) {
   );
 }
 
-export default function UserList() {
-  const navigate = useNavigate();
+export default function UserList({ data, rowsPerPage }) {
+  // const navigate = useNavigate();
+  //commented it because it was preventing the page from rendering 
+  //Uncaught Error: useNavigate() may be used only in the context of a <Router> component.
+  const [page, setPage] = useState(1);
+  const { slice, range } = useTable(data, page, rowsPerPage);
 
   return (
     <>
@@ -200,7 +131,7 @@ export default function UserList() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {dummyUsers.map((user) => (
+              {slice.map((user) => (
                 <UserRow key={user.email} user={user} />
               ))}
             </tbody>
@@ -289,6 +220,7 @@ export default function UserList() {
             </div>
           </div>
         </div>
+        <TableFooter range={range} slice={slice} setPage={setPage} page={page} />
         {/* END DATATABLE */} {/* END BOX CONTENT */}
       </div>
     </>

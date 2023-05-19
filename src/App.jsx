@@ -4,11 +4,11 @@ import {
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
+import { useEffect } from "react";
 import MainDashboard from "./Pages/Dashboard";
 import SignUp from "./Pages/Auth/SignUp";
 import UserDashboard from "./Pages/Dashboard/Users/UserDashboard";
 import UserList from "./Pages/Dashboard/Users/UserList";
-import { useEffect } from "react";
 import TestTable from "./Pages/Dashboard/Users/TestTable";
 import CreateUser from "./Pages/Dashboard/Users/CreateUser";
 import UserMonitor from "./Pages/Dashboard/Users/UserMonitor";
@@ -20,6 +20,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import Auth from "./Pages/Auth";
 import SignIn from "./Pages/Auth/SignIn";
 import GlobalContext from "./Context";
+import DummyUsers from "../data/DummyUsers";
 
 const queryClient = new QueryClient();
 
@@ -61,7 +62,7 @@ function App() {
             >
               <Route path="users" element={<MainDashboard />}>
                 <Route exact path="dashboard" element={<UserDashboard />} />
-                <Route exact path="list" element={<UserList />} />
+                <Route exact path="list" element={<UserList data={DummyUsers} rowsPerPage={6} />} />
                 <Route exact path="create" element={<CreateUser />} />
                 <Route exact path="monitor" element={<UserMonitor />} />
                 {/* <Route exact path="testtable" element={<TestTable />} /> */}
@@ -85,7 +86,7 @@ function App() {
         </Router>
       </GlobalContext>
     </QueryClientProvider>
-    
+
   );
 }
 
