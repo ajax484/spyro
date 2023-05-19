@@ -85,6 +85,7 @@ function App() {
         </Router>
       </GlobalContext>
     </QueryClientProvider>
+    
   );
 }
 

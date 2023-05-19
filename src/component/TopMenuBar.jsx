@@ -3,7 +3,7 @@ import React from "react";
 export default function TopMenuBar({ toggleSidebar }) {
   return (
     <header className="fixed bg-white w-full z-[1000] p-5 border-b-[1px] border-b-gray-100 shadow-[8px_2px_10px_0px_rgba(182,182,182,0.1)] flex justify-between">
-      <img src="/public/logo.svg" />
+      <img src="/logo.svg" />
       <button onClick={toggleSidebar}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
