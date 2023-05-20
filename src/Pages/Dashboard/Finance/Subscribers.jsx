@@ -1,6 +1,17 @@
 import React from "react";
+import DummyUsers from "../../../../data/DummyUsers";
+import Table from "../../../Pagination/Table";
 
 export default function Subscribers() {
+  const arr=[
+    "User",
+    "Plan Name",
+    "Status",
+    "Subscribed On",
+    "Subscribed ID",
+    "Paid By",
+    "Words",
+  ]
   return (
     <>
       <div className="flex justify-between items-center mb-8">
@@ -11,28 +22,9 @@ export default function Subscribers() {
           <h2 className="text-lg font-bold">All Subscribers</h2>
         </div>
         <div className="overflow-x-auto px-2">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr role="row">
-                {[
-                  "User",
-                  "Plan Name",
-                  "Status",
-                  "Subscribed On",
-                  "Subscribed ID",
-                  "Paid By",
-                  "Words",
-                ].map((heading) => (
-                  <th
-                    key={heading}
-                    className="px-6 py-3 text-sm font-bold text-gray-700 uppercase tracking-wider"
-                  >
-                    {heading}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-          </table>
+        <Table data={DummyUsers} rowsPerPage={6}>
+              {arr}
+            </Table>
         </div>
         <div className="flex justify-between items-center">
           <div className="">

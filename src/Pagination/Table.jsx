@@ -2,10 +2,10 @@ import {useState} from 'react'
 import useTable from './useTable';
 import TableFooter from './TableFooter';
 
-function UserRow({ user }) {
+function UserRow({ user,children }) {
 
   return (
-    
+
     <tr className="odd">
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <div className="flex">
@@ -85,7 +85,7 @@ function UserRow({ user }) {
   );
 }
 
-const Table = ({data,rowsPerPage}) => {
+const Table = ({data,rowsPerPage,children}) => {
 	const [page,setPage] = useState(1);
 	const { slice,range } = useTable(data, page, rowsPerPage);
   return (
@@ -93,15 +93,7 @@ const Table = ({data,rowsPerPage}) => {
     <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr role="row">
-                {[
-                  "User",
-                  "Group",
-                  "Words Left",
-                  "Images Left",
-                  "Country",
-                  "Status",
-                  "Created On",
-                ].map((heading) => (
+                {children.map((heading) => (
                   <th
                     key={heading}
                     className="px-6 py-3 text-sm font-bold text-gray-700 uppercase tracking-wider"
@@ -113,7 +105,7 @@ const Table = ({data,rowsPerPage}) => {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {slice.map((user) => (
-                <UserRow key={user.email} user={user} />
+                <UserRow key={user.email} user={user} children={children} />
               ))}
             </tbody>
           </table>

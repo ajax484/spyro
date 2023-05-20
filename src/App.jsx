@@ -44,49 +44,49 @@ function App() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <GlobalContext>
-        <Router>
-          <Routes>
-            <Route path="/auth" element={<Auth />}>
-              <Route exact path="signup" element={<SignUp />} />
-              <Route exact path="signin" element={<SignIn />} />
-            </Route>
-            <Route
-              path="/admin"
-              element={
-                <>
-                  <Outlet />
-                </>
-              }
-            >
-              <Route path="users" element={<MainDashboard />}>
-                <Route exact path="dashboard" element={<UserDashboard />} />
-                <Route exact path="list" element={<UserList />} />
-                <Route exact path="create" element={<CreateUser />} />
-                <Route exact path="monitor" element={<UserMonitor />} />
-                {/* <Route exact path="testtable" element={<TestTable />} /> */}
-              </Route>
-              <Route path="Finance" element={<MainDashboard />}>
-                <Route
-                  exact
-                  path="referrals_system"
-                  element={<ReferralSystem />}
-                />
-                <Route
-                  exact
-                  path="referrals_payout"
-                  element={<ReferralPayout />}
-                />
-                <Route exact path="subscription" element={<Subscription />} />
-                <Route exact path="subscribers" element={<Subscribers />} />
-              </Route>
-            </Route>
-          </Routes>
-        </Router>
-      </GlobalContext>
-    </QueryClientProvider>
-    
+    // <QueryClientProvider client={queryClient}>
+    //   <GlobalContext>
+    //     <Router>
+    //       <Routes>
+    //         <Route path="/auth" element={<Auth />}>
+    //           <Route exact path="signup" element={<SignUp />} />
+    //           <Route exact path="signin" element={<SignIn />} />
+    //         </Route>
+    //         <Route
+    //           path="/admin"
+    //           element={
+    //             <>
+    //               <Outlet />
+    //             </>
+    //           }
+    //         >
+    //           <Route path="users" element={<MainDashboard />}>
+    //             <Route exact path="dashboard" element={<UserDashboard />} />
+    //             <Route exact path="list" element={<UserList />} />
+    //             <Route exact path="create" element={<CreateUser />} />
+    //             <Route exact path="monitor" element={<UserMonitor />} />
+    //             {/* <Route exact path="testtable" element={<TestTable />} /> */}
+    //           </Route>
+    //           <Route path="Finance" element={<MainDashboard />}>
+    //             <Route
+    //               exact
+    //               path="referrals_system"
+    //               element={<ReferralSystem />}
+    //             />
+    //             <Route
+    //               exact
+    //               path="referrals_payout"
+    //               element={<ReferralPayout />}
+    //             />
+    //             <Route exact path="subscription" element={<Subscription />} />
+    //             <Route exact path="subscribers" element={<Subscribers />} />
+    //           </Route>
+    //         </Route>
+    //       </Routes>
+    //     </Router>
+    //   </GlobalContext>
+    // </QueryClientProvider>
+    <Subscription />
   );
 }
 

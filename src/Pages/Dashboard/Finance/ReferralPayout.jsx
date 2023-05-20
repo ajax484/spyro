@@ -1,6 +1,18 @@
 import React from "react";
+import Table from "../../../Pagination/Table";
+import ReferralPayoutData from "../../../../data/ReferralPayoutData";
+import DummyUsers from "../../../../data/DummyUsers";
 
 export default function ReferralPayout() {
+  const arr=[
+    "Requested Date",
+    "Request ID",
+    "Email",
+    "Total Amount(USD)",
+    "User Payment Gateway",
+    "Status",
+    "Actions",
+  ]
   return (
     <>
       <div className="flex justify-between items-center mb-8">
@@ -14,28 +26,9 @@ export default function ReferralPayout() {
           </h2>
         </div>
         <div className="overflow-x-auto px-2">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr role="row">
-                {[
-                  "Requested Date",
-                  "Request ID",
-                  "Email",
-                  "Total Amount(USD)",
-                  "User Payment Gateway",
-                  "Status",
-                  "Actions",
-                ].map((heading) => (
-                  <th
-                    key={heading}
-                    className="px-6 py-3 text-sm font-bold text-gray-700 uppercase tracking-wider"
-                  >
-                    {heading}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-          </table>
+          <Table data={DummyUsers} rowsPerPage={6}>
+              {arr}
+            </Table>
         </div>
       </div>
     </>

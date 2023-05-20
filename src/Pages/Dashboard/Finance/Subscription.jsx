@@ -1,6 +1,18 @@
-import React from "react";
+import Table from "../../../Pagination/Table";
+import DummyUsers from "../../../../data/DummyUsers";
 
 export default function Subscription() {
+  const arr=[
+    "Plan Name",
+    "Status",
+    "Words",
+    "Images",
+    "Characters",
+    "Minutes",
+    "Frequency",
+    "AI Image",
+    "Featured",
+  ]
   return (
     <>
       <div className="flex justify-between items-center mb-8">
@@ -18,78 +30,9 @@ export default function Subscription() {
           <h2 className="text-lg font-bold">User Management</h2>
         </div>
         <div className="overflow-x-auto px-2">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr role="row">
-                {[
-                  "Plan Name",
-                  "Status",
-                  "Words",
-                  "Images",
-                  "Characters",
-                  "Minutes",
-                  "Frequency",
-                  "AI Image",
-                  "Featured",
-                ].map((heading) => (
-                  <th
-                    key={heading}
-                    className="px-6 py-3 text-sm font-bold text-gray-700 uppercase tracking-wider"
-                  >
-                    {heading}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm flex flex-col justify-center text-gray-700">
-                  <span className="text-gray-800 font-bold text-lg">
-                    Visionary Plan
-                  </span>
-                  <span>30.00 USD</span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                  <span
-                    className={`px-4 py-2 rounded-xl w-full text-center font-bold ${
-                      "Subscriber" === "Subscriber"
-                        ? "bg-green-200/50 text-green-500"
-                        : user.role === "Admin"
-                        ? "bg-blue-200/50 text-blue-500"
-                        : "bg-stone-200/50 text-gray-500"
-                    }`}
-                  >
-                    Active
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">
-                  250,000
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">
-                  100
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">
-                  0
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">
-                  0
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                  <span
-                    className={`px-4 py-2 rounded-xl w-full text-center font-bold ${
-                      "Subscriber" === "Subscriber"
-                        ? "bg-green-200/50 text-green-500"
-                        : user.role === "Admin"
-                        ? "bg-blue-200/50 text-blue-500"
-                        : "bg-stone-200/50 text-gray-500"
-                    }`}
-                  >
-                    Active
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <Table data={DummyUsers} rowsPerPage={6}>
+              {arr}
+            </Table>
         </div>
         <div className="flex justify-between items-center">
           <div className="">
