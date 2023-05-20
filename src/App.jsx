@@ -62,7 +62,7 @@ function App() {
     //         >
     //           <Route path="users" element={<MainDashboard />}>
     //             <Route exact path="dashboard" element={<UserDashboard />} />
-    //             <Route exact path="list" element={<UserList data={DummyUsers} rowsPerPage={} />} />
+    //             <Route exact path="list" element={<UserList />} />
     //             <Route exact path="create" element={<CreateUser />} />
     //             <Route exact path="monitor" element={<UserMonitor />} />
     //             {/* <Route exact path="testtable" element={<TestTable />} /> */}
@@ -87,7 +87,7 @@ function App() {
     //   </GlobalContext>
     // </QueryClientProvider>
     // <UserDashboard />
-    <UserList data={DummyUsers} rowsPerPage={6} />
+    <UserList />
   );
 }
 

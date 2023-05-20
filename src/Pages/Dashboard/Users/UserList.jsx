@@ -2,6 +2,8 @@ import {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import useTable from "../../../Pagination/useTable";
 import TableFooter from "../../../Pagination/TableFooter";
+import Table from "../../../Pagination/Table";
+import DummyUsers from "../../../../data/DummyUsers";
 
 function UserRow({ user }) {
   console.log(user);
@@ -85,12 +87,10 @@ function UserRow({ user }) {
   );
 }
 
-export default function UserList({ data, rowsPerPage }) {
+export default function UserList() {
   // const navigate = useNavigate();
   //commented it because it was preventing the page from rendering 
   //Uncaught Error: useNavigate() may be used only in the context of a <Router> component.
-  const [page, setPage] = useState(1);
-  const { slice, range } = useTable(data, page, rowsPerPage);
 
   return (
     <>
@@ -109,7 +109,8 @@ export default function UserList({ data, rowsPerPage }) {
           <h2 className="text-lg font-bold">User Management</h2>
         </div>
         <div className="overflow-x-auto px-2">
-          <table className="min-w-full divide-y divide-gray-200">
+          <Table data={DummyUsers} rowsPerPage={6} />
+          {/* <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr role="row">
                 {[
@@ -135,9 +136,9 @@ export default function UserList({ data, rowsPerPage }) {
                 <UserRow key={user.email} user={user} />
               ))}
             </tbody>
-          </table>
+          </table> */}
         </div>
-        <div className="flex justify-between items-center">
+        {/* <div className="flex justify-between items-center">
           <div className="">
             <div className="text-xs text-gray-600">
               Showing 1 to 6 of 6 entries
@@ -219,8 +220,8 @@ export default function UserList({ data, rowsPerPage }) {
               </ul>
             </div>
           </div>
-        </div>
-        <TableFooter range={range} slice={slice} setPage={setPage} page={page} />
+        </div> */}
+        {/* <TableFooter range={range} slice={slice} setPage={setPage} page={page} /> */}
         {/* END DATATABLE */} {/* END BOX CONTENT */}
       </div>
     </>
