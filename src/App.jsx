@@ -21,6 +21,8 @@ import Auth from "./Pages/Auth";
 import SignIn from "./Pages/Auth/SignIn";
 import GlobalContext from "./Context";
 import DummyUsers from "../data/DummyUsers";
+import ReferralPayoutData from "../data/ReferralPayoutData";
+import SubscriptionData from "../data/SubscriptionData";
 
 const queryClient = new QueryClient();
 
@@ -62,7 +64,7 @@ function App() {
             >
               <Route path="users" element={<MainDashboard />}>
                 <Route exact path="dashboard" element={<UserDashboard />} />
-                <Route exact path="list" element={<UserList />} />
+                <Route exact path="list" element={<UserList data={DummyUsers} rowsPerPage={6} />} />
                 <Route exact path="create" element={<CreateUser />} />
                 <Route exact path="monitor" element={<UserMonitor />} />
                 {/* <Route exact path="testtable" element={<TestTable />} /> */}
@@ -76,17 +78,20 @@ function App() {
                 <Route
                   exact
                   path="referrals_payout"
-                  element={<ReferralPayout />}
+                  element={<ReferralPayout data={ReferralPayoutData} rowsPerPage={6}  />}
                 />
-                <Route exact path="subscription" element={<Subscription />} />
-                <Route exact path="subscribers" element={<Subscribers />} />
+                <Route exact path="subscription" element={<Subscription data={SubscriptionData} rowsPerPage={6} />} />
+                <Route exact path="subscribers" element={<Subscribers data={DummyUsers} rowsPerPage={6} />} />
               </Route>
             </Route>
           </Routes>
         </Router>
       </GlobalContext>
     </QueryClientProvider>
-
+  // <ReferralPayout data={ReferralPayoutData} rowsPerPage={6}  />
+  // <UserList data={DummyUsers} rowsPerPage={6}/>
+  // <Subscription data={SubscriptionData} rowsPerPage={6} />
+  // <Subscribers data={DummyUsers} rowsPerPage={6} />
   );
 }
 

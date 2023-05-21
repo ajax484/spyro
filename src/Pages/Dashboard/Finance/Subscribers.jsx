@@ -1,9 +1,12 @@
-import React from "react";
+import {useState} from "react";
 import DummyUsers from "../../../../data/DummyUsers";
 import Table from "../../../Pagination/Table";
+import useTable from "../../../Pagination/useTable";
+import SubscriptionData from "../../../../data/SubscriptionData";
+import TableFooter from "../../../Pagination/TableFooter";
 
-export default function Subscribers() {
-  const arr=[
+export default function Subscribers({data,rowsPerPage}) {
+  const heading=[
     "User",
     "Plan Name",
     "Status",
@@ -12,6 +15,85 @@ export default function Subscribers() {
     "Paid By",
     "Words",
   ]
+  const [page,setPage] = useState(1);
+  const { slice,range } = useTable(data, page, rowsPerPage);
+  function UserRow({user}){
+    return (
+     <tr className="odd">
+     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+   <div className="flex">
+     <div className="mr-4 h-6 w-6">
+       <img
+         alt="Avatar"
+         className="rounded-circle"
+         src="https://test.spyro.ai/img/users/avatar.png"
+       />
+     </div>
+     <div className="widget-user-name">
+       <span className="font-bold text-gray-700">{user.name}</span>
+     </div>
+   </div>
+ </td>
+ <td className="px-6 py-4 whitespace-nowrap text-sm flex justify-center">
+   <span
+     className={`px-2 py-1 rounded-xl w-full text-center font-bold ${
+       user.role === "Subscriber"
+         ? "bg-green-200/50 text-green-500"
+         : user.role === "Admin"
+         ? "bg-blue-200/50 text-blue-500"
+         : "bg-stone-200/50 text-gray-500"
+     }`}
+   >
+     {user.role}
+   </span>
+ </td>
+ <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+   <span className="font-weight-bold">{user.status}</span>
+ </td>
+ <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+   <span className="font-weight-bold">{user.dateCreatedAt}</span>
+ </td>
+ <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+   <span className="font-weight-bold">{user.wordsLeft}</span>
+ </td>
+ <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+   <span >
+     {user.name}
+   </span>
+ </td>
+ <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+   <span className="font-weight-bold">{user.wordsLeft}</span>
+ </td>
+ <td
+   style={{
+     display: "none",
+   }}
+ >
+   <div>
+     <a href="https://test.spyro.ai/admin/users/3/show">
+       <i
+         className="fa-solid fa-clipboard-user table-action-buttons view-action-button"
+         title="View User"
+       />
+     </a>
+     <a href="https://test.spyro.ai/admin/users/3/edit">
+       <i
+         className="fa-solid fa-user-pen table-action-buttons edit-action-button"
+         title="Edit User Group"
+       />
+     </a>
+     <a className="deleteUserButton" id={3} href="#">
+       <i
+         className="fa-solid fa-user-slash table-action-buttons delete-action-button"
+         title="Delete User"
+       />
+     </a>
+   </div>
+ </td>
+ </tr> 
+    )
+  }
+
   return (
     <>
       <div className="flex justify-between items-center mb-8">
@@ -22,92 +104,10 @@ export default function Subscribers() {
           <h2 className="text-lg font-bold">All Subscribers</h2>
         </div>
         <div className="overflow-x-auto px-2">
-        <Table data={DummyUsers} rowsPerPage={6}>
-              {arr}
+        <Table data={DummyUsers} rowsPerPage={6} heading={heading}>
+            {slice.map(user=><UserRow user={user} key={user.words}/>)}
             </Table>
-        </div>
-        <div className="flex justify-between items-center">
-          <div className="">
-            <div className="text-xs text-gray-600">
-              Showing 1 to 6 of 6 entries
-            </div>
-          </div>
-          <div className="col-sm-12 col-md-7">
-            <div
-              className="dataTables_paginate paging_full_numbers"
-              id="listUsersTable_paginate"
-            >
-              <ul className="pagination">
-                <li
-                  className="paginate_button page-item first disabled"
-                  id="listUsersTable_first"
-                >
-                  <a
-                    href="#"
-                    aria-controls="listUsersTable"
-                    data-dt-idx={0}
-                    tabIndex={0}
-                    className="page-link"
-                  >
-                    <i className="fa fa-angle-double-left" />
-                  </a>
-                </li>
-                <li
-                  className="paginate_button page-item previous disabled"
-                  id="listUsersTable_previous"
-                >
-                  <a
-                    href="#"
-                    aria-controls="listUsersTable"
-                    data-dt-idx={1}
-                    tabIndex={0}
-                    className="page-link"
-                  >
-                    <i className="fa fa-angle-left" />
-                  </a>
-                </li>
-                <li className="paginate_button page-item active">
-                  <a
-                    href="#"
-                    aria-controls="listUsersTable"
-                    data-dt-idx={2}
-                    tabIndex={0}
-                    className="page-link"
-                  >
-                    1
-                  </a>
-                </li>
-                <li
-                  className="paginate_button page-item next disabled"
-                  id="listUsersTable_next"
-                >
-                  <a
-                    href="#"
-                    aria-controls="listUsersTable"
-                    data-dt-idx={3}
-                    tabIndex={0}
-                    className="page-link"
-                  >
-                    <i className="fa fa-angle-right" />
-                  </a>
-                </li>
-                <li
-                  className="paginate_button page-item last disabled"
-                  id="listUsersTable_last"
-                >
-                  <a
-                    href="#"
-                    aria-controls="listUsersTable"
-                    data-dt-idx={4}
-                    tabIndex={0}
-                    className="page-link"
-                  >
-                    <i className="fa fa-angle-double-right" />
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+            <TableFooter range={range} slice={slice} setPage={setPage} page={page} />
         </div>
         {/* END DATATABLE */} {/* END BOX CONTENT */}
       </div>
