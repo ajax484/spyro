@@ -88,10 +88,7 @@ function App() {
         </Router>
       </GlobalContext>
     </QueryClientProvider>
-  // <ReferralPayout data={ReferralPayoutData} rowsPerPage={6}  />
-  // <UserList data={DummyUsers} rowsPerPage={6}/>
-  // <Subscription data={SubscriptionData} rowsPerPage={6} />
-  // <Subscribers data={DummyUsers} rowsPerPage={6} />
+
   );
 }
 
