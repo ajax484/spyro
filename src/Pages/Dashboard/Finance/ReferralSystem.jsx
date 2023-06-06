@@ -1,4 +1,6 @@
 import React from "react";
+import Table from "../../../Pagination/Table";
+import DummyUsers from "../../../../data/DummyUsers";
 
 const referralsInfo = [
   {
@@ -16,6 +18,23 @@ const referralsInfo = [
 ];
 
 export default function ReferralSystem() {
+  const arr =[
+    "Purchase Date",
+    "Order ID",
+    "Referrer",
+    "Payment(USD)",
+    "Commission(USD)",
+    "Paid By",
+    "Actions",
+  ]
+  const arr2=[
+    "Referrer Name",
+    "Referrer Email",
+    "Referral ID",
+    "Group",
+    "# of Users",
+    "Total Commissions(USD)",
+  ]
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center mb-8">
@@ -34,28 +53,10 @@ export default function ReferralSystem() {
           </h2>
         </div>
         <div className="overflow-x-auto px-2">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr role="row">
-                {[
-                  "Purchase Date",
-                  "Order ID",
-                  "Referrer",
-                  "Payment(USD)",
-                  "Commission(USD)",
-                  "Paid By",
-                  "Actions",
-                ].map((heading) => (
-                  <th
-                    key={heading}
-                    className="px-6 py-3 text-sm font-bold text-gray-700 uppercase tracking-wider"
-                  >
-                    {heading}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-          </table>
+        <Table data={DummyUsers} rowsPerPage={6}>
+              {arr}
+            </Table>
+          
         </div>
       </div>
       <div className="bg-white shadow-md rounded-xl border-gray-100 overflow-hidden border-[1px] space-y-4">
@@ -65,27 +66,9 @@ export default function ReferralSystem() {
           </h2>
         </div>
         <div className="overflow-x-auto px-2">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr role="row">
-                {[
-                  "Referrer Name",
-                  "Referrer Email",
-                  "Referral ID",
-                  "Group",
-                  "# of Users",
-                  "Total Commissions(USD)",
-                ].map((heading) => (
-                  <th
-                    key={heading}
-                    className="px-6 py-3 text-sm font-bold text-gray-700 uppercase tracking-wider"
-                  >
-                    {heading}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-          </table>
+        <Table data={DummyUsers} rowsPerPage={6}>
+              {arr2}
+            </Table>
         </div>
       </div>
     </div>

@@ -1,85 +1,30 @@
-import React from "react";
+import {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import useTable from "../../../Pagination/useTable";
+import TableFooter from "../../../Pagination/TableFooter";
+import Table from "../../../Pagination/Table";
+import DummyUsers from "../../../../data/DummyUsers";
 
-const dummyUsers = [
-  {
-    name: "Vivian Agbata",
-    email: "vivianagbata1@gmail.com",
-    role: "User",
-    imagesLeft: 685,
-    wordsLeft: 1000,
-    country: "Ireland",
-    status: "Active",
-    dateCreatedAt: "28 Mar 2023",
-    timeCreatedAt: "11:18 AM",
-    avatar: "Avatar",
-  },
-  {
-    name: "Jonathan Emmanuel",
-    email: "jonathan@zenithchain.co",
-    role: "Subscriber",
-    imagesLeft: 50000,
-    wordsLeft: 30,
-    country: "Ireland",
-    status: "Active",
-    dateCreatedAt: "28 Mar 2023",
-    timeCreatedAt: "20:36 PM",
-    avatar: "Avatar",
-  },
-  {
-    name: "Jonathan Emmanuel",
-    email: "jonathan@payvix.com",
-    role: "Subscriber",
-    imagesLeft: 5000,
-    wordsLeft: 1000,
-    country: "Ireland",
-    status: "Active",
-    dateCreatedAt: "28 Mar 2023",
-    timeCreatedAt: "01:56 AM",
-    avatar: "Avatar",
-  },
-  {
-    name: "Jonathan Emmanuel",
-    email: "jezenith22@gmail.com",
-    role: "User",
-    imagesLeft: 1000,
-    wordsLeft: 1000,
-    country: "Ireland",
-    status: "Pending",
-    dateCreatedAt: "03 Apr 2023",
-    timeCreatedAt: "15:23 PM",
-    avatar: "Avatar",
-  },
-  {
-    name: "Carue Main",
-    email: "salbiz2021@gmail.com",
-    role: "User",
-    imagesLeft: 1000,
-    wordsLeft: 1000,
-    country: "Nigeria",
-    status: "Active",
-    dateCreatedAt: "01 May 2023",
-    timeCreatedAt: "14:51 PM",
-    avatar: "Avatar",
-  },
-  {
-    name: "Admin",
-    email: "admin@example.com",
-    role: "Admin",
-    imagesLeft: 100000,
-    wordsLeft: 10000,
-    country: "",
-    status: "Active",
-    dateCreatedAt: "27 Mar 2023",
-    timeCreatedAt: "20:46 PM",
-    avatar: "Avatar",
-  },
-];
 
-function UserRow({ user }) {
-  console.log(user);
-  return (
-    <tr className="odd">
+export default function UserList({data,rowsPerPage}) {
+  // const navigate = useNavigate();
+  //commented it because it was preventing the page from rendering 
+  //Uncaught Error: useNavigate() may be used only in the context of a <Router> component.
+  const heading=[
+    "User",
+    "Group",
+    "Words Left",
+    "Images Left",
+    "Country",
+    "Status",
+    "Created On",
+  ]
+  const [page,setPage] = useState(1);
+  const { slice,range } = useTable(data, page, rowsPerPage);
+
+  function UserRow({user}){
+    return(
+      <tr className="odd">
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <div className="flex">
           <div className="mr-4 h-6 w-6">
@@ -155,12 +100,8 @@ function UserRow({ user }) {
         </div>
       </td>
     </tr>
-  );
-}
-
-export default function UserList() {
-  const navigate = useNavigate();
-
+    )
+  }
   return (
     <>
       <div className="flex justify-between items-center mb-8">
@@ -178,117 +119,13 @@ export default function UserList() {
           <h2 className="text-lg font-bold">User Management</h2>
         </div>
         <div className="overflow-x-auto px-2">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr role="row">
-                {[
-                  "User",
-                  "Group",
-                  "Words Left",
-                  "Images Left",
-                  "Country",
-                  "Status",
-                  "Created On",
-                ].map((heading) => (
-                  <th
-                    key={heading}
-                    className="px-6 py-3 text-sm font-bold text-gray-700 uppercase tracking-wider"
-                  >
-                    {heading}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {dummyUsers.map((user) => (
-                <UserRow key={user.email} user={user} />
-              ))}
-            </tbody>
-          </table>
+          <Table data={DummyUsers} rowsPerPage={6} heading={heading}>
+          {slice.map(user=><UserRow user={user} key={user.email}/>)}
+          </Table>
+          {/* <Table data={DummyUsers} rowsPerPage={6} arr={arr} /> */}
         </div>
-        <div className="flex justify-between items-center">
-          <div className="">
-            <div className="text-xs text-gray-600">
-              Showing 1 to 6 of 6 entries
-            </div>
-          </div>
-          <div className="col-sm-12 col-md-7">
-            <div
-              className="dataTables_paginate paging_full_numbers"
-              id="listUsersTable_paginate"
-            >
-              <ul className="pagination">
-                <li
-                  className="paginate_button page-item first disabled"
-                  id="listUsersTable_first"
-                >
-                  <a
-                    href="#"
-                    aria-controls="listUsersTable"
-                    data-dt-idx={0}
-                    tabIndex={0}
-                    className="page-link"
-                  >
-                    <i className="fa fa-angle-double-left" />
-                  </a>
-                </li>
-                <li
-                  className="paginate_button page-item previous disabled"
-                  id="listUsersTable_previous"
-                >
-                  <a
-                    href="#"
-                    aria-controls="listUsersTable"
-                    data-dt-idx={1}
-                    tabIndex={0}
-                    className="page-link"
-                  >
-                    <i className="fa fa-angle-left" />
-                  </a>
-                </li>
-                <li className="paginate_button page-item active">
-                  <a
-                    href="#"
-                    aria-controls="listUsersTable"
-                    data-dt-idx={2}
-                    tabIndex={0}
-                    className="page-link"
-                  >
-                    1
-                  </a>
-                </li>
-                <li
-                  className="paginate_button page-item next disabled"
-                  id="listUsersTable_next"
-                >
-                  <a
-                    href="#"
-                    aria-controls="listUsersTable"
-                    data-dt-idx={3}
-                    tabIndex={0}
-                    className="page-link"
-                  >
-                    <i className="fa fa-angle-right" />
-                  </a>
-                </li>
-                <li
-                  className="paginate_button page-item last disabled"
-                  id="listUsersTable_last"
-                >
-                  <a
-                    href="#"
-                    aria-controls="listUsersTable"
-                    data-dt-idx={4}
-                    tabIndex={0}
-                    className="page-link"
-                  >
-                    <i className="fa fa-angle-double-right" />
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        
+        <TableFooter range={range} slice={slice} setPage={setPage} page={page} />
         {/* END DATATABLE */} {/* END BOX CONTENT */}
       </div>
     </>
