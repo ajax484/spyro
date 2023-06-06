@@ -6,6 +6,8 @@ import axios from "axios";
 const AuthContext = createContext({
   user: {},
   login: async () => {},
+  logout: async () => {},
+  googleSignUp: async () => {},
   register: async () => {},
 });
 
@@ -23,7 +25,7 @@ export default function AuthContextWrapper({ children }) {
       console.log(refreshToken);
       const response = await axios
         .post(
-          "https://f73a-105-113-17-25.ngrok-free.app/v1/user/refresh",
+          "http://20.127.29.255/v1/user/refresh",
           {},
           {
             headers: {
@@ -56,10 +58,44 @@ export default function AuthContextWrapper({ children }) {
     }
   });
 
+  const googleSignUp = async (token) => {
+    try {
+      // console.log(token);
+      const response = await axios
+        .post("http://20.127.29.255/v1/user/google-signup", {
+          token,
+        })
+        .catch((err) => {
+          if (err.response) {
+            // The client was given an error response (5xx, 4xx)
+            console.log(err.response.data.detail);
+            throw err.response.data.detail;
+          } else if (err.request) {
+            // The client never received a response, and the request was never left
+            console.log(err.request);
+            throw "request not sent";
+          } else {
+            // Anything else
+            throw "unknown error";
+          }
+        });
+
+      console.log(response.data);
+
+      setUser(response?.data?.user);
+      setAccessToken(response?.data?.access_token);
+      setRefreshToken(response?.data?.refresh_token);
+
+      return { data: null, msg: "login successful", error: null };
+    } catch (err) {
+      return { data: null, error: err, msg: "error" };
+    }
+  };
+
   const login = async (username, password) => {
     try {
       const response = await axios
-        .post("https://f73a-105-113-17-25.ngrok-free.app/v1/user/login", {
+        .post("http://20.127.29.255/v1/user/login", {
           username,
           password,
         })
@@ -105,7 +141,7 @@ export default function AuthContextWrapper({ children }) {
       } = userDetails;
 
       const response = await axios
-        .post("https://ea9f-105-113-17-77.ngrok-free.app/v1/user/signup", {
+        .post("http://20.127.29.255/v1/user/signup", {
           firstname,
           lastname,
           password,
@@ -143,12 +179,53 @@ export default function AuthContextWrapper({ children }) {
     }
   };
 
-  useEffect(() => {
-    refresh();
-  }, []);
+  const logout = async () => {
+    try {
+      const response = await axios
+        .delete(
+          "http://20.127.29.255/v1/user/logout",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+        .catch((err) => {
+          if (err.response) {
+            // The client was given an error response (5xx, 4xx)
+            console.log(err.response.data.detail);
+            throw err.response.data.detail;
+          } else if (err.request) {
+            // The client never received a response, and the request was never left
+            console.log(err.request);
+            throw "request not sent";
+          } else {
+            // Anything else
+            throw "unknown error";
+          }
+        });
+
+      console.log(response.data);
+
+      setUser(null);
+      setAccessToken(null);
+      setRefreshToken(null);
+
+      return { data: null, msg: "logout successful", error: null };
+    } catch (err) {
+      return { data: null, error: err, msg: "error" };
+    }
+  };
+
+  // useEffect(() => {
+  //   refresh();
+  // }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, register }}>
+    <AuthContext.Provider
+      value={{ user, login, register, googleSignUp, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

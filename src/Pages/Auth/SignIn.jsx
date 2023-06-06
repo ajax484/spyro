@@ -2,21 +2,24 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation } from "react-query";
 import { useAuth } from "../../Context/AuthContext";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login } = useAuth();
+  const { login, googleSignUp } = useAuth();
 
   const handleUsernameChange = (event) => setUsername(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
 
-  const { mutate, isLoading, error } = useMutation(async () => {
+  const { mutate, isLoading, error } = useMutation(async ({ type, token }) => {
     try {
-      console.log({ username, password });
+      // console.log({ username, password, type, token });
 
-      const { data, error, msg } = await login(username, password);
+      const loginTypeFn = () =>
+        type === "google" ? googleSignUp(token) : login(username, password);
+      const { data, error, msg } = await loginTypeFn();
 
       if (error) throw new Error(error);
       console.log(msg);
@@ -79,12 +82,19 @@ export default function SignIn() {
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            mutate();
+            mutate({ type: "normal", token: null });
           }}
           className="bg-primary rounded-lg py-2 px-3 text-white font-semibold border border-primary hover:bg-white hover:text-primary transition-colors duration-150"
         >
           {isLoading ? "Loading..." : "Sign In"}
         </button>
+        <GoogleLogin
+          onSuccess={(res) => {
+            console.log(res.credential);
+            mutate({ type: "google", token: res.credential });
+          }}
+          onError={(err) => alert(err)}
+        />
         <p className="text-sm text-gray-500">
           or{" "}
           <Link

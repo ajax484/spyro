@@ -47,7 +47,7 @@ export default function SignUp() {
         avatarurl,
       });
 
-      if (!username || !firstname || !lastname || !password || !country) {
+      if (!username || !firstname || !lastname || !password || !country || !location) {
         throw new Error("please fill all required fields");
       }
 
@@ -499,6 +499,7 @@ export default function SignUp() {
               name="location"
               onChange={(e) => updateDetail("location", e.target.value)}
               autoComplete="off"
+              required
             />
           </div>
         </div>
