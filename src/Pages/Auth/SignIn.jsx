@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { useAuth } from "../../Context/AuthContext";
 import { GoogleLogin } from "@react-oauth/google";
 
 export default function SignIn() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, googleSignUp } = useAuth();
+  const { user, login, googleSignUp } = useAuth();
 
   const handleUsernameChange = (event) => setUsername(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
 
   const { mutate, isLoading, error } = useMutation(async ({ type, token }) => {
     try {
-      // console.log({ username, password, type, token });
+      console.log(googleSignUp);
 
       const loginTypeFn = () =>
         type === "google" ? googleSignUp(token) : login(username, password);
@@ -24,6 +25,7 @@ export default function SignIn() {
       if (error) throw new Error(error);
       console.log(msg);
 
+      navigate("/admin/users/dashboard");
       alert(msg);
     } catch (error) {
       console.log(error);

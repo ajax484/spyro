@@ -7,12 +7,12 @@ export default function TopMenuBar({ toggleSidebar }) {
 
   const { mutate, isLoading, error } = useMutation(async () => {
     try {
-      const response = await logout();
+      const { data, error, msg } = await logout();
 
-      // if (error) throw new Error(error);
-      console.log(response, logout);
+      if (error) throw new Error(error);
+      console.log(msg);
 
-      // alert(msg);
+      alert(msg);
     } catch (error) {
       console.log(error);
       alert(error);

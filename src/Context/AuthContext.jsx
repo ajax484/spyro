@@ -4,7 +4,7 @@ import { useMutation } from "react-query";
 import axios from "axios";
 
 const AuthContext = createContext({
-  user: {},
+  user: {d: 'e'},
   login: async () => {},
   logout: async () => {},
   googleSignUp: async () => {},
