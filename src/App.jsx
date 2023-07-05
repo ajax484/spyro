@@ -24,6 +24,7 @@ import SignIn from "./Pages/Auth/SignIn";
 import GlobalContext from "./Context";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useAuth } from "./Context/AuthContext";
+import DummyUsers from "../data/DummyUsers";
 
 const queryClient = new QueryClient();
 
@@ -110,6 +111,7 @@ function App() {
         </GlobalContext>
       </QueryClientProvider>
     </GoogleOAuthProvider>
+
   );
 }
 

@@ -122,7 +122,6 @@ export default function UserList({data,rowsPerPage}) {
           <Table data={DummyUsers} rowsPerPage={6} heading={heading}>
           {slice.map(user=><UserRow user={user} key={user.email}/>)}
           </Table>
-          {/* <Table data={DummyUsers} rowsPerPage={6} arr={arr} /> */}
         </div>
         
         <TableFooter range={range} slice={slice} setPage={setPage} page={page} />
